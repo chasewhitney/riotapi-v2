@@ -6,7 +6,14 @@
 
 
 <div class="container">
-<p>
-  RiotAPI app test. You are home.
-</p>
+  <p>
+    RiotAPI app test. You are home.
+  </p>
+  Enter Summoner Name: <input type="text" name="" placeholder="summoner name" ng-model="sumName">
+  <button type="button" name="button" ng-click="uc.setSummoner(sumName)">Submit</button>
+
+  <div ng-show="uc.nameEntered">
+    Displaying data for: {{uc.summoner}} {{uc.accountID}}
+  </div>
+
 </div>
