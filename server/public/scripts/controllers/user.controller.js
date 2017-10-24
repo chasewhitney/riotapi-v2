@@ -4,17 +4,17 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   vm.userService = UserService;
   vm.nameEntered = false;
 
+getMatches = function(id){
+  console.log('in getMatches with:', id);
 
-// vm.getStuff = function(){
-//     console.log('in getStuff');
-//     $http.get('/getStuff').then(function(response){
-//       console.log(response);
-//
-//     });
-//
-//   };
-//
-// vm.getStuff();
+  $http.get('/getMatches/' + id).then(function(response){
+        console.log('got response data:', response.data);
+        vm.matches = response.data.matches;
+        console.log('Matches:', vm.matches);
+      });
+
+};
+
 
 vm.setSummoner = function(name){
   console.log('in setSummoner with:', name);
@@ -24,6 +24,7 @@ vm.setSummoner = function(name){
         vm.nameEntered = true;
         vm.summoner = name;
         vm.accountID = response.data.accountId;
+        getMatches(vm.accountID);
       });
 
 

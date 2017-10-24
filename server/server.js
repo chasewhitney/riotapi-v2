@@ -7,7 +7,6 @@ var API_KEY = process.env.API_KEY || require('./config.js').apiKey;
 
 // Route includes
 
-var eventRouter = require('./routes/event.router');
 
 var port = process.env.PORT || 5001;
 
@@ -17,10 +16,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve back static files
 app.use(express.static('./server/public'));
-
-// Routes
-app.use('/event', eventRouter);
-
 
 
 // https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/RiotSchmick?api_key=<key>
@@ -46,7 +41,22 @@ var URL = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + s
 
 });
 
+app.get('/getMatches/:id', function(req, res){
+var sumID = req.params.id;
 
+var URL = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + sumID + '?api_key=' + API_KEY;
+
+  request(URL, function(err, response, body) {
+    if(err) {
+      console.log('error:', err);
+      res.sendStatus(500);
+    } else {
+      res.send(body);
+
+    }
+  });
+
+});
 
 
 
