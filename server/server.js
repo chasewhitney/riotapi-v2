@@ -66,8 +66,19 @@ app.get('/getMatchData/:id', function(req, res){
 });
 
 app.get('/writeData', function(req, res){
-fs.writeFile('matchData.json', allMatchData, 'utf8');
+  var dataObj = {data: allMatchData};
+  var content = JSON.stringify(dataObj);
+
+  fs.writeFile("testData.json", content, 'utf8', function (err) {
+      if (err) {
+          return console.log(err);
+      }
+
+      console.log("The file was saved!");
       res.sendStatus(200);
+  });
+
+
 
 });
 
