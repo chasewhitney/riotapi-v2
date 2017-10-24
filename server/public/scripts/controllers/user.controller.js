@@ -44,9 +44,15 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       $http.get('/getMatchData/' + matchIDs[i]).then(function(response){
         // console.log(response.data);
         vm.matchData.push(response.data);
-        // console.log('vm.matchData is:', vm.matchData);
+        console.log('vm.matchData is:', vm.matchData);
       });
     }
   };
-    
+vm.writeData = function(){
+  $http.get('/writeData').then(function(response){
+    console.log('got response from writeData:', response.data);
+
+  });
+
+};
 });

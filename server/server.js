@@ -5,6 +5,9 @@ var path = require('path');
 var request = require('request');
 var API_KEY = process.env.API_KEY || require('../config.js').apiKey;
 
+var fs = require('fs');
+var allMatchData = [];
+
 // Route includes
 
 var port = process.env.PORT || 5001;
@@ -56,12 +59,17 @@ app.get('/getMatchData/:id', function(req, res){
       console.log('error:', err);
       res.sendStatus(500);
     } else {
+      allMatchData.push(body);
       res.send(body);
     }
   });
 });
 
+app.get('/writeData', function(req, res){
+fs.writeFile('matchData.json', allMatchData, 'utf8');
+      res.sendStatus(200);
 
+});
 
 
 app.get('/', function(req, res) {

@@ -3,8 +3,12 @@ myApp.factory('UserService', function($http, $location){
 
   var uv = {};
 
+  uv.extractPlayerData = function(arr){
+    console.log('in extractPlayerData with:', arr);
+    
 
-  uv.eventToView = {};
+  };
+
 
   return uv;
 
