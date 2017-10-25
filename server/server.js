@@ -59,7 +59,7 @@ app.get('/getMatchData/:id', function(req, res){
       console.log('error:', err);
       res.sendStatus(500);
     } else {
-      allMatchData.push(body);
+      allMatchData.push(JSON.parse(body));
       res.send(body);
     }
   });

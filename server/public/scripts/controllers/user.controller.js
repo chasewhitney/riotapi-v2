@@ -5,6 +5,24 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   vm.nameEntered = false;
   vm.matchData = [];
 
+// GET TEST DATA
+  var requestURL = 'https://raw.githubusercontent.com/ChaseWhitney/riotapi/master/testData.json';
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
+
+
+    var testData = {};
+
+    request.onload = function() {
+      testData = request.response.data;
+      console.log('testData typeof:', typeof testData);
+      console.log('testData is:', testData);
+      console.log('testData[0].gameId is:', testData[0].gameId);
+    };
+// END GET TEST DATA
+
   getMatches = function(id){ // gets list of recent matches
     console.log('in getMatches with:', id);
     $http.get('/getMatches/' + id).then(function(response){
