@@ -20,9 +20,25 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       console.log('testData typeof:', typeof testData);
       console.log('testData is:', testData);
       console.log('testData[0].gameId is:', testData[0].gameId);
+      vm.userService.matchData = testData;
+      console.log('vm.userService.matchData is:', vm.userService.matchData);
     };
 // END GET TEST DATA
+//GET CHAMP DATA
 
+var requestURL2 = 'https://raw.githubusercontent.com/AlecSands/lol_data_experiment/master/data/data.json';
+var request2 = new XMLHttpRequest();
+request2.open('GET', requestURL2);
+request2.responseType = 'json';
+request2.send();
+
+vm.userService.champData = {};
+
+request2.onload = function() {
+  vm.userService.champData = request2.response;
+  console.log('vm.userService.champData is:', vm.userService.champData);
+};
+//END GET CHAMP DATA
   getMatches = function(id){ // gets list of recent matches
     console.log('in getMatches with:', id);
     $http.get('/getMatches/' + id).then(function(response){
@@ -49,8 +65,8 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       console.log(response.data);
       vm.nameEntered = true;
       vm.summoner = name;
-      vm.accountID = response.data.accountId;
-      getMatches(vm.accountID);
+      vm.userService.accountID = response.data.accountId;
+      getMatches(vm.userService.accountID);
     });
   };
 
@@ -66,11 +82,11 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       });
     }
   };
+
 vm.writeData = function(){
   $http.get('/writeData').then(function(response){
     console.log('got response from writeData:', response.data);
-
   });
-
 };
+
 });
