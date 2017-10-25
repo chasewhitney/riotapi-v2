@@ -5,8 +5,8 @@ var path = require('path');
 var request = require('request');
 var API_KEY = process.env.API_KEY || require('../config.js').apiKey;
 
-var fs = require('fs');
-var allMatchData = [];
+// var fs = require('fs');
+// var allMatchData = [];
 
 // Route includes
 
@@ -59,28 +59,28 @@ app.get('/getMatchData/:id', function(req, res){
       console.log('error:', err);
       res.sendStatus(500);
     } else {
-      allMatchData.push(JSON.parse(body));
+      // allMatchData.push(JSON.parse(body));
       res.send(body);
     }
   });
 });
 
-app.get('/writeData', function(req, res){
-  var dataObj = {data: allMatchData};
-  var content = JSON.stringify(dataObj);
-
-  fs.writeFile("testData.json", content, 'utf8', function (err) {
-      if (err) {
-          return console.log(err);
-      }
-
-      console.log("The file was saved!");
-      res.sendStatus(200);
-  });
-
-
-
-});
+// app.get('/writeData', function(req, res){
+//   var dataObj = {data: allMatchData};
+//   var content = JSON.stringify(dataObj);
+//
+//   fs.writeFile("testData.json", content, 'utf8', function (err) {
+//       if (err) {
+//           return console.log(err);
+//       }
+//
+//       console.log("The file was saved!");
+//       res.sendStatus(200);
+//   });
+//
+//
+//
+// });
 
 
 app.get('/', function(req, res) {

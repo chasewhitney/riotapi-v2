@@ -18,9 +18,21 @@ myApp.factory('UserService', function($http, $location){
   getLane = function(id, match){
     console.log('in getLane with id:', id);
     console.log('in getLane with index:', match);
-    return 1;
-
-
+    var player = -1;
+    var lane = "none";
+    for(var i = 0;i < match.participantIdentities.length; i++){
+      // console.log('accountId is:',match.participantIdentities[i].player.accountId);
+      if(match.participantIdentities[i].player.accountId == id){
+        player = match.participantIdentities[i].participantId;
+      }
+    }
+    // console.log('player:', player);
+    for(var p = 0;p < match.participants.length; p++){
+      if(match.participants[p].participantId == player){
+        lane = match.participants[p].timeline.lane;
+      }
+    }
+    return lane;
   };
 
   uv.extractPlayerData = function(arr){

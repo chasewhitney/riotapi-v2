@@ -5,16 +5,14 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   vm.nameEntered = false;
   vm.matchData = [];
 
-// GET TEST DATA
+/// GET TEST DATA
+
   var requestURL = 'https://raw.githubusercontent.com/ChaseWhitney/riotapi/master/testData.json';
     var request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
     request.send();
-
-
     var testData = {};
-
     request.onload = function() {
       testData = request.response.data;
       console.log('testData typeof:', typeof testData);
@@ -22,29 +20,34 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       console.log('testData[0].gameId is:', testData[0].gameId);
       vm.userService.matchData = testData;
       console.log('vm.userService.matchData is:', vm.userService.matchData);
+      vm.userService.accountID = 216577959;
     };
-// END GET TEST DATA
-//GET CHAMP DATA
+
+/// END GET TEST DATA
+
+/// GET CHAMP DATA
 
 var requestURL2 = 'https://raw.githubusercontent.com/AlecSands/lol_data_experiment/master/data/data.json';
 var request2 = new XMLHttpRequest();
 request2.open('GET', requestURL2);
 request2.responseType = 'json';
 request2.send();
-
 vm.userService.champData = {};
-
 request2.onload = function() {
   vm.userService.champData = request2.response;
   console.log('vm.userService.champData is:', vm.userService.champData);
 };
-//END GET CHAMP DATA
+
+/// END GET CHAMP DATA
+
   getMatches = function(id){ // gets list of recent matches
     console.log('in getMatches with:', id);
     $http.get('/getMatches/' + id).then(function(response){
       console.log('got response data:', response.data);
       vm.matches = response.data.matches;
+      vm.userService.matches = angular.copy(vm.matches);
       console.log('Matches:', vm.matches);
+      console.log('Service Matches:', vm.userService.matches);
     });
   };
 
@@ -83,10 +86,10 @@ request2.onload = function() {
     }
   };
 
-vm.writeData = function(){
-  $http.get('/writeData').then(function(response){
-    console.log('got response from writeData:', response.data);
-  });
-};
+// vm.writeData = function(){
+//   $http.get('/writeData').then(function(response){
+//     console.log('got response from writeData:', response.data);
+//   });
+// };
 
 });
