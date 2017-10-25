@@ -33,8 +33,8 @@ myApp.factory('UserService', function($http, $location){
   };
 
   getLane = function(id, match){ // returns which lane was played in
-    console.log('in getLane with id:', id);
-    console.log('in getLane with index:', match);
+    // console.log('in getLane with id:', id);
+    // console.log('in getLane with index:', match);
     var player = -1;
     var lane = "none";
     var index = getParticipantIndex(id, match);
@@ -42,15 +42,36 @@ myApp.factory('UserService', function($http, $location){
     return lane;
   };
 
+  getChampion= function(id, match){
+    // console.log('in getChampion with id:', id);
+    // console.log('in getChampion with index:', match);
+    var index = getParticipantIndex(id, match);
+    var champID = match.participants[index].championId;
+    var champName = "none";
+    var champType = "none";
+    for(var cName in uv.champData.data){
+      if(uv.champData.data[cName].id == champID){
+        champName = uv.champData.data[cName].name;
+        champType = uv.champData.data[cName].tags[0];
+      }
+    }
+    // console.log('champName is:', champName);
+    // console.log('champID is:', champID);
+    var champ = {champID:champID, champName:champName, champType:champType};
+    return champ;
+  };
+
   uv.extractPlayerData = function(arr){ // gets relevant data
     console.log('in extractPlayerData with:', arr);
     var relevantData=[];
     for(var i = 0; i < arr.length; i++){
        //winOrLoss,champ,lane
+      var champ = getChampion(uv.accountID, arr[i]);
       relevantData[i] = {};
-      relevantData[i].champion=0;
-      relevantData[i].champType=0;
-      relevantData[i].lane=getLane(uv.accountID, arr[i]);
+      relevantData[i].champName = champ.champName;
+      relevantData[i].champID = champ.champID;
+      relevantData[i].champType = champ.champType;
+      relevantData[i].lane = getLane(uv.accountID, arr[i]);
       relevantData[i].win=0;
 
     }
