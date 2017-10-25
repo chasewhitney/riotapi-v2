@@ -15,11 +15,8 @@ myApp.factory('UserService', function($http, $location){
   ]
 };
 
-  getLane = function(id, match){
-    console.log('in getLane with id:', id);
-    console.log('in getLane with index:', match);
-    var player = -1;
-    var lane = "none";
+  getParticipantIndex = function(id, match){ // returns particpant index from match data
+    var index = -1;
     for(var i = 0;i < match.participantIdentities.length; i++){
       // console.log('accountId is:',match.participantIdentities[i].player.accountId);
       if(match.participantIdentities[i].player.accountId == id){
@@ -29,13 +26,23 @@ myApp.factory('UserService', function($http, $location){
     // console.log('player:', player);
     for(var p = 0;p < match.participants.length; p++){
       if(match.participants[p].participantId == player){
-        lane = match.participants[p].timeline.lane;
+        index = p;
       }
     }
+    return index;
+  };
+
+  getLane = function(id, match){ // returns which lane was played in
+    console.log('in getLane with id:', id);
+    console.log('in getLane with index:', match);
+    var player = -1;
+    var lane = "none";
+    var index = getParticipantIndex(id, match);
+    lane = match.participants[index].timeline.lane;
     return lane;
   };
 
-  uv.extractPlayerData = function(arr){
+  uv.extractPlayerData = function(arr){ // gets relevant data
     console.log('in extractPlayerData with:', arr);
     var relevantData=[];
     for(var i = 0; i < arr.length; i++){
