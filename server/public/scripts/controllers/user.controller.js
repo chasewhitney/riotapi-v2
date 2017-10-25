@@ -36,6 +36,7 @@ vm.userService.champData = {};
 request2.onload = function() {
   vm.userService.champData = request2.response;
   console.log('vm.userService.champData is:', vm.userService.champData);
+  vm.userService.buildChampionList();
 };
 
 /// END GET CHAMP DATA

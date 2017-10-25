@@ -12,6 +12,7 @@
   Enter Summoner Name: <input type="text" name="" placeholder="summoner name" ng-model="sumName">
   <button type="button" name="button" ng-click="uc.setSummoner(sumName)">Submit</button>
   <button type="button" name="button" ng-click="uc.userService.extractPlayerData(uc.userService.matchData)">Extract Data</button>
+  <button type="button" name="button" ng-click="uc.userService.buildDataObject(uc.userService.relData)">Build Data Object</button>
   <div ng-show="uc.nameEntered">
     Displaying data for: {{uc.summoner}} {{uc.accountID}}
     <button type="button" name="button" ng-click="uc.getMatchData()">Get Match Data</button>
