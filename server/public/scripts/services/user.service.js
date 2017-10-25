@@ -3,19 +3,11 @@ myApp.factory('UserService', function($http, $location){
 
   var uv = {};
 
-  uv.lolObj = { //format will be role->champType->champ->win/loss
-  "name" : "Roles",
-  "children":[
-    {"name": "Top", "children":[]},
-    {"name": "Jungle", "children":[]},
-    {"name": "Mid", "children":[]},
-    {"name": "ADC", "children":[]},
-    {"name": "Support", "children":[]},
+  buildDataObject = function(obj){
 
-  ]
-};
+  };
 
-  getParticipantIndex = function(id, match){ // returns particpant index from match data
+  getParticipantIndex = function(id, match){ // returns participant index from match data
     var index = -1;
     for(var i = 0;i < match.participantIdentities.length; i++){
       // console.log('accountId is:',match.participantIdentities[i].player.accountId);
@@ -42,7 +34,7 @@ myApp.factory('UserService', function($http, $location){
     return lane;
   };
 
-  getChampion= function(id, match){
+  getChampion= function(id, match){ // returns champion id, name, and type for match
     // console.log('in getChampion with id:', id);
     // console.log('in getChampion with index:', match);
     var index = getParticipantIndex(id, match);
@@ -61,7 +53,15 @@ myApp.factory('UserService', function($http, $location){
     return champ;
   };
 
-  uv.extractPlayerData = function(arr){ // gets relevant data
+  getWinLoss = function(id, match){ // returns true or false depending on if participant won or lost
+    // console.log('in getWinLoss with id:', id);
+    // console.log('in getWinLoss with index:', match);
+    var index = getParticipantIndex(id, match);
+    var win = match.participants[index].stats.win;
+    return win;
+  };
+
+  uv.extractPlayerData = function(arr){ // builds relevant data for each match
     console.log('in extractPlayerData with:', arr);
     var relevantData=[];
     for(var i = 0; i < arr.length; i++){
@@ -72,15 +72,15 @@ myApp.factory('UserService', function($http, $location){
       relevantData[i].champID = champ.champID;
       relevantData[i].champType = champ.champType;
       relevantData[i].lane = getLane(uv.accountID, arr[i]);
-      relevantData[i].win=0;
+      relevantData[i].win = getWinLoss(uv.accountID, arr[i]);
 
     }
 
-    // displaySunBurst();
+    // displaySunBurst(*DATAOBJECT*);
     console.log('relevantData is:', relevantData);
   };
 
-  displaySunBurst = function(){
+  displaySunBurst = function(dataObject){
     console.log('in displaySunBurst');
 
 
@@ -115,7 +115,7 @@ myApp.factory('UserService', function($http, $location){
 
 
 
-    root = d3.hierarchy(uv.lolObj);
+    root = d3.hierarchy(dataObject);
     root.sum(function(d) { return d.size; });
     svg.selectAll("path")
         .data(partition(root).descendants())
