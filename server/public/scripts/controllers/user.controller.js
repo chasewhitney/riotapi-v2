@@ -4,24 +4,25 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   vm.userService = UserService;
   vm.nameEntered = false;
   vm.matchData = [];
+  vm.userService.loading = false;
 
 /// GET TEST DATA
 
-  var requestURL = 'https://raw.githubusercontent.com/ChaseWhitney/riotapi/master/testData.json';
-    var request = new XMLHttpRequest();
-    request.open('GET', requestURL);
-    request.responseType = 'json';
-    request.send();
-    var testData = {};
-    request.onload = function() {
-      testData = request.response.data;
-      console.log('testData typeof:', typeof testData);
-      console.log('testData is:', testData);
-      console.log('testData[0].gameId is:', testData[0].gameId);
-      vm.userService.matchData = testData;
-      console.log('vm.userService.matchData is:', vm.userService.matchData);
-      vm.userService.accountID = 216577959;
-    };
+  // var requestURL = 'https://raw.githubusercontent.com/ChaseWhitney/riotapi/master/testData.json';
+  //   var request = new XMLHttpRequest();
+  //   request.open('GET', requestURL);
+  //   request.responseType = 'json';
+  //   request.send();
+  //   var testData = {};
+  //   request.onload = function() {
+  //     testData = request.response.data;
+  //     console.log('testData typeof:', typeof testData);
+  //     console.log('testData is:', testData);
+  //     console.log('testData[0].gameId is:', testData[0].gameId);
+  //     vm.userService.matchData = testData;
+  //     console.log('vm.userService.matchData is:', vm.userService.matchData);
+  //     vm.userService.accountID = 216577959;
+  //   };
 
 /// END GET TEST DATA
 
@@ -70,7 +71,11 @@ request2.onload = function() {
       vm.nameEntered = true;
       vm.summoner = name;
       vm.userService.accountID = response.data.accountId;
+      vm.userService.loading = true;
       getMatches(vm.userService.accountID);
+      setTimeout(vm.getMatchData, 500);
+      setTimeout(function(){vm.userService.extractPlayerData(vm.userService.matchData);}, 2500);
+      setTimeout(function(){vm.userService.buildDataObject(vm.userService.relData);}, 3000);
     });
   };
 
@@ -83,6 +88,7 @@ request2.onload = function() {
         // console.log(response.data);
         vm.matchData.push(response.data);
         console.log('vm.matchData is:', vm.matchData);
+        vm.userService.matchData = vm.matchData;
       });
     }
   };
@@ -92,5 +98,10 @@ request2.onload = function() {
 //     console.log('got response from writeData:', response.data);
 //   });
 // };
+
+  vm.test = function(){
+    console.log('in test');
+    console.log('vm.loading is:', vm.loading);
+  };
 
 });

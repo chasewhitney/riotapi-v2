@@ -198,6 +198,7 @@ displaySunBurst(finalData);
 
   displaySunBurst = function(dataObject){
     console.log('in displaySunBurst');
+    uv.loading = false;
 
 
     var width = 960,
@@ -237,7 +238,16 @@ displaySunBurst(finalData);
     .data(partition(root).descendants())
     .enter().append("path")
     .attr("d", arc)
-    .style("fill", function(d) { return color((d.children ? d : d.parent).data.name); })
+    // .style("fill", function(d) { return color((d.children ? d : d.parent).data.name); })
+
+    .style("fill", function(d) {
+      if(d.data.name == "Losses"){
+        return "red";
+      } else if(d.data.name == "Wins"){
+        return "green";
+      }
+      return color(d.data.name); })
+
     .on("click", click)
     .append("title")
     .text(function(d) { return d.data.name + "\n" + formatNumber(d.value); });
