@@ -40,7 +40,7 @@ app.get('/getSummonerID/:name', function(req, res){
 
 app.get('/getMatches/:id', function(req, res){
   var sumID = req.params.id;
-  var URL = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + sumID + '/recent?api_key=' + API_KEY;
+  var URL = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + sumID + '?api_key=' + API_KEY;
   request(URL, function(err, response, body) {
     if(err) {
       console.log('error:', err);

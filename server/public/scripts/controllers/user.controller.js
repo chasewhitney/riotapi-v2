@@ -73,9 +73,20 @@ request2.onload = function() {
       vm.userService.accountID = response.data.accountId;
       vm.userService.loading = true;
       getMatches(vm.userService.accountID);
-      setTimeout(vm.getMatchData, 500);
-      setTimeout(function(){vm.userService.extractPlayerData(vm.userService.matchData);}, 2500);
-      setTimeout(function(){vm.userService.buildDataObject(vm.userService.relData);}, 3000);
+      // setTimeout(vm.getMatchData, 1000);
+      vm.matchData = [];
+      setTimeout(function(){vm.getDataChunks(0, 10);}, 1000);
+      setTimeout(function(){vm.getDataChunks(11, 20);}, 3000);
+      setTimeout(function(){vm.getDataChunks(21, 30);}, 5000);
+      setTimeout(function(){vm.getDataChunks(31, 40);}, 700);
+      setTimeout(function(){vm.getDataChunks(41, 50);}, 9000);
+      setTimeout(function(){vm.getDataChunks(51, 60);}, 1100);
+      setTimeout(function(){vm.getDataChunks(61, 70);}, 13000);
+      setTimeout(function(){vm.getDataChunks(71, 80);}, 15000);
+      setTimeout(function(){vm.getDataChunks(81, 90);}, 17000);
+
+      setTimeout(function(){vm.userService.extractPlayerData(vm.userService.matchData);}, 19000);
+      setTimeout(function(){vm.userService.buildDataObject(vm.userService.relData);}, 21000);
     });
   };
 
@@ -84,6 +95,20 @@ request2.onload = function() {
     var matchIDs = getMatchIDs(vm.matches);
     console.log('matchIDs is:', matchIDs);
     for(var i = 0; i < matchIDs.length; i++){
+      $http.get('/getMatchData/' + matchIDs[i]).then(function(response){
+        // console.log(response.data);
+        vm.matchData.push(response.data);
+        console.log('vm.matchData is:', vm.matchData);
+        vm.userService.matchData = vm.matchData;
+      });
+    }
+  };
+
+  vm.getDataChunks = function(min, max){ // gets match data for each recently played match
+    console.log('in getMatchData with:', vm.matches);
+    var matchIDs = getMatchIDs(vm.matches);
+    console.log('matchIDs is:', matchIDs);
+    for(var i = min; i < matchIDs.length && i <= max; i++){
       $http.get('/getMatchData/' + matchIDs[i]).then(function(response){
         // console.log(response.data);
         vm.matchData.push(response.data);

@@ -47,7 +47,7 @@ myApp.factory('UserService', function($http, $location){
         case "JUNGLE":
         data[i].laneIndex = 1;
         break;
-        case "MID":
+        case "MIDDLE":
         data[i].laneIndex = 2;
         break;
         case "BOTTOM":
@@ -92,8 +92,8 @@ myApp.factory('UserService', function($http, $location){
         {"name": "Top", "children":[]},
         {"name": "Jungle", "children":[]},
         {"name": "Mid", "children":[]},
-        {"name": "ADC", "children":[]},
-        {"name": "Support", "children":[]},
+        {"name": "Bot", "children":[]},
+        {"name": "Unknown", "children":[]},
       ]
     };
     for(var o = 0; o < lolObj.children.length; o++){
