@@ -247,10 +247,10 @@ displaySunBurst(finalData);
         return "green";
       }
       return color(d.data.name); })
-
     .on("click", click)
     .append("title")
     .text(function(d) { return d.data.name + "\n" + formatNumber(d.value); });
+
 
 
     function click(d) {

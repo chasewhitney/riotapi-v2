@@ -36,3 +36,9 @@ h1{
 .Losses {
   background-color: red;
 }
+
+path {
+    stroke: #fff;
+    stroke-width: 0.5;
+    cursor: pointer;
+}

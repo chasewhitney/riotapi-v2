@@ -73,8 +73,8 @@ request2.onload = function() {
       vm.userService.accountID = response.data.accountId;
       vm.userService.loading = true;
       getMatches(vm.userService.accountID);
-      // setTimeout(vm.getMatchData, 1000);
       vm.matchData = [];
+      // setTimeout(vm.getMatchData, 1000);
       setTimeout(function(){vm.getDataChunks(0, 10);}, 1000);
       setTimeout(function(){vm.getDataChunks(11, 20);}, 3000);
       setTimeout(function(){vm.getDataChunks(21, 30);}, 5000);
