@@ -4,28 +4,12 @@
     </div>
 </div>
 
-
 <div class="container">
   <p>
     RiotAPI app and D3 testing. You are home.
   </p>
   Enter Summoner Name: <input type="text" name="" placeholder="summoner name" ng-model="sumName">
-  <button type="button" name="button" ng-click="uc.setSummoner(sumName)">Display Sunburst</button>
-  <p>The sunburst is an interactive visual representation of summoner's last 20 ranked games - click to isolate a particular section, mouse-over for label.</p>
+  <button type="button" name="button" ng-click="uc.doAll('Auto Mcgee')">Go</button>
+  <p>The sunburst is an interactive visual representation of summoner's last 100 ranked games - click to isolate a particular section, mouse-over for label.</p>
   <p>Rings starting from center: Lane, Champion Type, Champion, Match Won or Lost</p>
-  <p>Note: No production API key yet so sunburst will take about 20 seconds to load.</p>
-  <p>Sometimes still breaks with slow load, and page must be refreshed to use again.</p>
-  <!-- <button type="button" name="button" ng-click="uc.test()">TEST</button> -->
-  <div ng-show="uc.userService.loading">
-    <!-- <p>Loading...</p> -->
-  </div>
-  <!-- <button type="button" name="button" ng-click="uc.userService.extractPlayerData(uc.userService.matchData)">Extract Data</button> -->
-  <!-- <button type="button" name="button" ng-click="uc.userService.buildDataObject(uc.userService.relData)">Build Data Object</button> -->
-  <!-- <div ng-show="uc.nameEntered">
-    Displaying data for: {{uc.summoner}} {{uc.accountID}}
-    <button type="button" name="button" ng-click="uc.getMatchData()">Get Match Data</button> -->
-    <!-- <button type="button" name="button" ng-click="uc.writeData()">WRITE DATA</button> -->
-
-  <!-- </div> -->
-
-<!-- </div> -->
+</div>
