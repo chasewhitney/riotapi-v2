@@ -13,7 +13,11 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     getSum(name)
     .then(getMatches)
     .then(extractMatchIDs)
+    .then(getMatchData)
     .then(doThing);
+
+
+    // console.log('response is:', $http.get('/getMatchData/' + 2634798282));
   }
 
 
@@ -36,14 +40,32 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   }
 
   function extractMatchIDs(result){
+    console.log('result is:', result);
     var ids = result.data.matches;
+    console.log('ids is:', ids);
+    console.log('ids length:', ids.length);
     var matchIDs = [];
-    for(i = 0; i < ids.length; i++){
+    for(i = 0; i < ids.length - 90; i++){ //// shortening matchIDs to avoid exceeding rate limits while developing
           matchIDs.push(ids[i].gameId);
     }
     return matchIDs;
   }
 
+  function getMatchData(matchIDs){
+    return new Promise((resolve, reject)=>{
+      var matchData = [];
+      console.log('matchIDs is:', matchIDs);
+      for(var i = 0; i < matchIDs.length; i++){
+        $http.get('/getMatchData/' + matchIDs[i]).then(function(response){
+          matchData.push(response.data);
+          if(matchData.length == matchIDs.length){
+            console.log('returning:', matchData);
+            resolve(matchData);
+          }
+        });
+      }
+    });
+  };
 
   function doThing(result) {
     console.log('result is:', result);

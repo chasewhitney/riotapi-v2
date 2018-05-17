@@ -49,7 +49,19 @@ app.get('/getSummonerID/:name', function(req, res){
   });
 });
 
-
+app.get('/getMatchData/:id', function(req, res){
+  var matchID = req.params.id;
+  var URL = 'https://na1.api.riotgames.com/lol/match/v3/matches/' + matchID + '?api_key=' + API_KEY;
+  request(URL, function(err, response, body) {
+    if(err) {
+      console.log('error:', err);
+      res.sendStatus(500);
+    } else {
+      // allMatchData.push(JSON.parse(body));
+      res.send(body);
+    }
+  });
+});
 
 app.get('/', function(req, res) {
   console.log('request for index');
