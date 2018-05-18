@@ -7,12 +7,6 @@ var Champ = require('./models/champ.js');
 var Summoner = require('./models/summoner.js');
 var API_KEY = process.env.API_KEY || require('./config.js').apiKey;
 var db = require('./modules/db.config.js');
-
-// var fs = require('fs');
-// var allMatchData = [];
-
-// Route includes
-
 var port = process.env.PORT || 5001;
 
 // Body parser middleware
@@ -24,7 +18,6 @@ app.use(express.static('./server/public'));
 
 app.get('/getMatches/:id', function(req, res){
   var sumID = req.params.id;
-  console.log('in getMatches with id:', sumID);
   var URL = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/' + sumID + '?api_key=' + API_KEY;
   request(URL, function(err, response, body) {
     if(err) {
@@ -57,7 +50,6 @@ app.get('/getMatchData/:id', function(req, res){
       console.log('error:', err);
       res.sendStatus(500);
     } else {
-      // allMatchData.push(JSON.parse(body));
       res.send(body);
     }
   });
@@ -77,36 +69,6 @@ app.get('/*', function(req, res) {
 app.listen(port, function(){
   console.log('Listening on port:', port);
 });
-
-
-
-// var url2 = 'https://raw.githubusercontent.com/AlecSands/lol_data_experiment/master/data/data.json';
-// request(url2, function(err, resp, body) {
-//   if (!err){
-//
-//     var myObj = JSON.parse(body);
-//
-//
-//
-//     var obj = {name: "champ data", data: myObj};
-//     console.log('in POST champData');
-//     var Champy = new Champ(obj);
-//
-//     Champy.save(function(err, data) {
-//             console.log('in save with:', data);
-//             if(err) {
-//               console.log('save error: ', err);
-//
-//             } else {
-//               console.log('Champ saved');
-//
-//               }
-//             });
-//
-//   }
-// });
-
-
 
 // app.post('/champData', (req,res) => {
 //   var obj = {name: "champ keys", data: req.body};

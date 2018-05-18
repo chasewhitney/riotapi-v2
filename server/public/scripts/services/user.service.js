@@ -1,5 +1,4 @@
 myApp.factory('UserService', function($http, $location){
-  //console.log('UserService Loaded');
 
   var uv = {};
 
@@ -7,5 +6,5 @@ myApp.factory('UserService', function($http, $location){
 
 
   return uv;
-  
+
 });

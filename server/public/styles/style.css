@@ -42,3 +42,8 @@ path {
     stroke-width: 0.5;
     cursor: pointer;
 }
+
+#progressBar {
+  margin:5px;
+  padding:5px;
+}
