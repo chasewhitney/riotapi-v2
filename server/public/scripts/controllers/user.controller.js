@@ -4,34 +4,35 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   vm.userService = UserService;
   vm.progressVal = 0;
 
-  var gDat = [
-    {champ: "Shaco", lane : "Jungle", win: true},
-    {champ: "Shaco", lane : "Jungle", win: false},
-    {champ: "Shaco", lane : "Jungle", win: true},
-    {champ: "Teemo", lane : "Jungle", win: false},
-    {champ: "Ahri", lane : "Middle", win: true},
-    {champ: "Teemo", lane : "Top", win: true},
-    {champ: "Brand", lane : "Middle", win: false},
-    {champ: "Ezreal", lane : "Bottom", win: false},
-    {champ: "Shaco", lane : "Jungle", win: true},
-    {champ: "Teemo", lane : "Middle", win: false},
-  ]
+
   //////////////// TESTING
+
+  ///////////////////  END TESTING
+
+  vm.doAll = function(name) {
+    getPlayerAccount(name) // Get player account ID
+    .then(getMatches) // Get match IDs for recently played games
+    .then(extractMatchIDs) // Pull match IDs from game data and put into an array
+    .then(getMatchData) // Get full match data for each match ID in array
+    .then(getChampionNames) // Add played champion name to match data based on provided championId
+    .then(buildObj); // Build sunburst object based on provided match data
+  }
+
   function treeObj(name){
     this.name = name;
     this.children = [];
   }
 
-  function buildObj(matchDataArray){
+  function buildObj(matchDataArray){ // Builds sunburst object from match data
     console.log('matchDataArray is:', matchDataArray);
     var finalObj = new treeObj("Lane");
     var fObj = finalObj.children;
 
     matchDataArray.forEach((v,i)=>{
-      var pMD = v.participants[getParticipantIndex(v)];  // player match data
-      var lane = pMD.timeline.lane;
-      var champ = pMD.champion;
-      var win = pMD.stats.win;
+      var pMD = v.participants[getParticipantIndex(v)];  // Player's match data
+      var lane = pMD.timeline.lane; // Lane player played inspect
+      var champ = pMD.champion; // Champion played
+      var win = pMD.stats.win; // Won or lost the match
 
       if(!fObj[lane]){
         fObj[lane] = new treeObj(lane);
@@ -51,17 +52,6 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     console.log('finalObj is:', finalObj);
   }
 
-  // buildObj();
-  ///////////////////  END TESTING
-  vm.doAll = function(name) {
-    getPlayerAccount(name)
-    .then(getMatches)
-    .then(extractMatchIDs)
-    .then(getMatchData)
-    .then(getChampionNames)
-    .then(buildObj);
-  }
-
   function getChampionNames(matchData){
     return new Promise((resolve, reject)=>{
       $http.get('/getChampList').then( response => {
@@ -75,20 +65,20 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     });
   }
 
-  function getPlayerAccount(name){ // gets summoner data
+  function getPlayerAccount(name){ // Gets player account information, including account ID
     vm.progressVal += 2;
     //console.log(`In getPlayerAccount with: ${name}`);
     return $http.get('/getSummonerID/' + name);
   };
 
-  function getMatches(result){
+  function getMatches(result){ // Gets basic info from player's last 100 matches
     vm.progressVal += 3;
     vm.accountId = result.data.accountId;
     //console.log(`In getMatches with:`, result);
     return $http.get('/getMatches/' + vm.accountId);
   }
 
-  function extractMatchIDs(result){
+  function extractMatchIDs(result){ // Gets match IDs from basic match info
     vm.progressVal += 5;
     //console.log(`In extractMatchIDs with:`, result);
     var ids = result.data.matches;
@@ -99,7 +89,7 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     return matchIDs;
   }
 
-  function getMatchData(matchIDs){
+  function getMatchData(matchIDs){ // Gets full match data pertaining to each match ID
     //console.log(`In getMatchData with:`, matchIDs);
     return new Promise((resolve, reject)=>{
       var matchData = [];
@@ -121,7 +111,7 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     return 1;
   }
 
-  function getParticipantIndex(item){
+  function getParticipantIndex(item){ // Finds correct player in array of all players in match
     for(let i = 0; i < item.participantIdentities.length; i++){
       if(item.participantIdentities[i].player.accountId == vm.accountId){
         return i;
