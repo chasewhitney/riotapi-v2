@@ -22,52 +22,75 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     this.children = [];
   }
 
-  function buildObj(){
+  function buildObj(matchDataArray){
+    console.log('matchDataArray is:', matchDataArray);
     var finalObj = new treeObj("Lane");
+    var fObj = finalObj.children;
 
-    gDat.forEach((gv,gi)=>{
-      if(!finalObj.children[gv.lane]){
-        finalObj.children[gv.lane] = new treeObj(gv.lane);
+    matchDataArray.forEach((v,i)=>{
+      var pMD = v.participants[getParticipantIndex(v)];  // player match data
+      var lane = pMD.timeline.lane;
+      var champ = pMD.champion;
+      var win = pMD.stats.win;
+
+      if(!fObj[lane]){
+        fObj[lane] = new treeObj(lane);
       }
-      if(!finalObj.children[gv.lane].children[gv.champ]){
-        finalObj.children[gv.lane].children[gv.champ] = new treeObj(gv.champ);
-        finalObj.children[gv.lane].children[gv.champ].children['Wins'] = {name: 'Wins', size: 0, children: []};
-        finalObj.children[gv.lane].children[gv.champ].children['Losses'] = {name: 'Losses', size: 0, children: []};
+      var fObjChamps = finalObj.children[lane].children;
+      if(!fObjChamps[champ]){
+        fObjChamps[champ] = new treeObj(champ);
+        fObjChamps[champ].children['Wins'] = {name: 'Wins', size: 0, children: []};
+        fObjChamps[champ].children['Losses'] = {name: 'Losses', size: 0, children: []};
       }
-      if(gv.win){
-        finalObj.children[gv.lane].children[gv.champ].children['Wins'].size +=1;
+      if(win){
+        fObjChamps[champ].children['Wins'].size +=1;
       } else {
-        finalObj.children[gv.lane].children[gv.champ].children['Losses'].size +=1;
+        fObjChamps[champ].children['Losses'].size +=1;
       }
     });
-    console.log(finalObj);
+    console.log('finalObj is:', finalObj);
   }
-  buildObj();
+
+  // buildObj();
   ///////////////////  END TESTING
   vm.doAll = function(name) {
     getPlayerAccount(name)
     .then(getMatches)
     .then(extractMatchIDs)
     .then(getMatchData)
-    .then(doThing);
+    .then(getChampionNames)
+    .then(buildObj);
+  }
+
+  function getChampionNames(matchData){
+    return new Promise((resolve, reject)=>{
+      $http.get('/getChampList').then( response => {
+        var champList = response.data;
+        matchData.forEach((v,i) =>{
+          var pMD = v.participants[getParticipantIndex(v)];
+          pMD.champion = champList[pMD.championId];
+        });
+        resolve(matchData);
+      });
+    });
   }
 
   function getPlayerAccount(name){ // gets summoner data
     vm.progressVal += 2;
-    console.log(`In getPlayerAccount with: ${name}`);
+    //console.log(`In getPlayerAccount with: ${name}`);
     return $http.get('/getSummonerID/' + name);
   };
 
   function getMatches(result){
     vm.progressVal += 3;
     vm.accountId = result.data.accountId;
-    console.log(`In getMatches with:`, result);
+    //console.log(`In getMatches with:`, result);
     return $http.get('/getMatches/' + vm.accountId);
   }
 
   function extractMatchIDs(result){
     vm.progressVal += 5;
-    console.log(`In extractMatchIDs with:`, result);
+    //console.log(`In extractMatchIDs with:`, result);
     var ids = result.data.matches;
     var matchIDs = [];
     for(i = 0; i < ids.length - 90; i++){ //// shortening matchIDs to avoid exceeding rate limits during development
@@ -77,7 +100,7 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
   }
 
   function getMatchData(matchIDs){
-    console.log(`In getMatchData with:`, matchIDs);
+    //console.log(`In getMatchData with:`, matchIDs);
     return new Promise((resolve, reject)=>{
       var matchData = [];
       for(var i = 0; i < matchIDs.length; i++){
@@ -93,29 +116,8 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     });
   };
 
-  ///NEED lane, champ, win/loss
-
-  //participantID: result.participantIdentities[index].participantId .player.accountId
-  //lane:
-  //champ:
-  //win/loss:
-
   function doThing(result) {
     console.log(`result is:`, result);
-    console.log('------------');
-
-    result.forEach((v,i)=>{
-      var pMD = v.participants[getParticipantIndex(v)]; // player match data
-
-      console.log(pMD.championId);
-
-      console.log(pMD.timeline.lane); //NONE if game ends before 20
-
-      console.log(pMD.timeline.role);
-      console.log((v.gameDuration / 60) + ' min');
-      console.log('------------');
-    })
-
     return 1;
   }
 

@@ -55,6 +55,20 @@ app.get('/getMatchData/:id', function(req, res){
   });
 });
 
+
+app.get('/getChampList', function(req, res) {
+  Champ.find({name: "champ keys"}, function(err, data) {
+    if(err) {
+      console.log('find error:', err);
+      res.sendStatus(500);
+    } else {
+      res.send(data[0].data);
+
+    }
+  });
+});
+
+
 app.get('/', function(req, res) {
   console.log('request for index');
   res.sendFile(path.join(__dirname, './public/views/index.html'));
