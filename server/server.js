@@ -8,7 +8,6 @@ var Summoner = require('./models/summoner.js');
 var API_KEY = process.env.API_KEY || require('./config.js').apiKey;
 var db = require('./modules/db.config.js');
 var port = process.env.PORT || 5001;
-
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
