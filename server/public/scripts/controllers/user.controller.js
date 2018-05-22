@@ -30,6 +30,8 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
     var fObj = finalObj.children;
 
     matchDataArray.forEach((v,i)=>{
+      if (v.gameMode == "CLASSIC") {
+
       var pMD = v.participants[getParticipantIndex(v)];  // Player's match data
       var lane = pMD.timeline.lane; // Lane player played inspect
       if(lane == "NONE") {
@@ -54,6 +56,7 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       else {
         fObj[laneIndex].children[champIndex].children[1].size++;
       }
+    }
     });
     console.log('finalObj is:', finalObj);
     return finalObj;
@@ -99,9 +102,8 @@ myApp.controller('UserController', function(UserService, $http, $location, $mdDi
       for(i = 0; i < ids.length; i++){ //// shortening matchIDs to avoid exceeding rate limits during development
         matchIDs.push(ids[i].gameId);
       }
-      console.log('STILL IN!!!!');
       return matchIDs;
-    } catch(err){
+    } catch(err) {
       console.log("Error:", err);
       vm.progressVal = 0;
       alert("Sorry, API rate limit exceeded. Please wait a minute before trying again.");
