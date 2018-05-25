@@ -5,13 +5,10 @@
 </div>
 
 <div class="container">
-  <p>
-    RiotAPI app and D3 testing. You are home.
-  </p>
   Enter Summoner Name: <input type="text" name="" placeholder="summoner name" ng-model="sumName">
   <button type="button" name="button" ng-click="uc.doAll(sumName)">Go</button>
-  <p>The sunburst is an interactive visual representation of summoner's last 100 ranked games - click to isolate a particular section, mouse-over for label.</p>
-  <p>Rings starting from center: Lane, Champion Type, Champion, Match Won or Lost</p>
+  <p>The sunburst is an interactive visual representation of the results of the player's recently played Classic mode matches - click to isolate a particular section, mouse-over for label.</p>
+  <p>Rings starting from center: Lane, Champion, Match Won or Lost</p>
 </div>
 <div id="progressBar">
   <md-progress-linear ng-show="uc.progressVal > 0" md-mode="determinate" value="{{uc.progressVal}}"></md-progress-linear>
