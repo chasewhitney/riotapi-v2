@@ -6,9 +6,10 @@
 
 <div class="container">
   Enter Summoner Name: <input type="text" name="" placeholder="summoner name" ng-model="sumName">
-  <button type="button" name="button" ng-click="uc.doAll(sumName)">Go</button>
-  <p>The sunburst is an interactive visual representation of the results of the player's recently played Classic mode matches - click to isolate a particular section, mouse-over for label.</p>
-  <p>Rings starting from center: Lane, Champion, Match Won or Lost</p>
+  <button type="button" name="button" ng-click="uc.doAll(sumName)">Go</button> (Demo: ZippityZipZapZoo)
+  <p>NOTE: API will only accept about two searches every two minutes before exceeding rate limit.
+  <p>The sunburst is an interactive visual representation of the results of the player's recently played Classic mode matches</p>
+  <p style="font-size: 16px"><b>Click to isolate a particular section, mouse-over for label.</b> Rings starting from center: Lane, Champion, Match Won or Lost</p>
 </div>
 <div id="progressBar">
   <md-progress-linear ng-show="uc.progressVal > 0" md-mode="determinate" value="{{uc.progressVal}}"></md-progress-linear>
