@@ -25,7 +25,7 @@
     "angular-messages": "^1.7.0",
     "angular-route": "^1.7.0",
     "body-parser": "^1.18.3",
-    "d3": "^5.4.0",
+    "d3": "^7.6.1",
     "express": "^4.16.3",
     "mongoose": "^5.1.1",
     "path": "^0.12.7",
